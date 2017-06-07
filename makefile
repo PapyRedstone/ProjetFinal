@@ -1,7 +1,7 @@
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 
-CFLAGS = -g -Wall -pedantic
+CFLAGS = -g -Wall -pedantic -O3
 
 all: a.out
 

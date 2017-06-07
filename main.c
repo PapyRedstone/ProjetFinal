@@ -6,8 +6,8 @@ int main(int argc, char const *argv[]) {
   char **map = initArray("appart.txt", &mapSize);
 
   Robot marvin = initRobot(getStartPoint(map, mapSize));
-
-  goForward(marvin);
+  turnLeft(&marvin);
+  goForward(&marvin);
 
   for (int y = 0; y < mapSize.y; y++) {
     for (int x = 0; x < mapSize.x; x++) {

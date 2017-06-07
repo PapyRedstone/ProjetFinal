@@ -3,7 +3,7 @@
 char *getFromFile(char *str, int maxLen, FILE *file) {
   char *result = fgets(str, maxLen, file);
   if (!result) {
-    printf("Erreur lecture fichier");
+    fprintf(stderr, "Erreur lecture fichier");
     return NULL;
   }
   str[strlen(str) - 1] = '\0';
@@ -17,7 +17,7 @@ char **initArray(char *filename, Position *size) {
   char **array = NULL;
 
   if (!file) {
-    printf("Erreur ouverture du fichier\n");
+    fprintf(stderr, "Erreur ouverture du fichier\n");
     return NULL;
   }
 
@@ -29,7 +29,7 @@ char **initArray(char *filename, Position *size) {
 
   // Allocation memoire du tableau
   if (!(array = malloc(sizeof(char *) * size->y))) {
-    printf("Erreur allocation memoire");
+    fprintf(stderr, "Erreur allocation memoire");
     return NULL;
   }
 
@@ -39,7 +39,7 @@ char **initArray(char *filename, Position *size) {
       return NULL;
     }
     if (!(array[y] = malloc(sizeof(char) * size->x))) {
-      printf("Erreur allocation memoire");
+      fprintf(stderr, "Erreur allocation memoire");
       return NULL;
     }
     for (x = 0; x < size->x; x++) {

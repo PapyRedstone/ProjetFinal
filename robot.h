@@ -3,6 +3,7 @@
 //    du robot
 //=============================================================================
 #include "functions.h"
+#include "astar.h"
 
 #define UP 0
 #define RIGHT 1
@@ -13,9 +14,6 @@ typedef struct {
   int direction;
   Position position;
   unsigned step;
-  Position *lOpen;
-  Position *lClose;
-  int lOpenSize,lCloseSize;
 } Robot;
 
 // Initialisation du robot
@@ -23,7 +21,7 @@ Robot initRobot(Position pos);
 Position getStartPoint(char **map, Position size);
 
 // Mouvement du robot
-int goForward(Robot *rob);
+void goForward(Robot *rob);
 void turnLeft(Robot *rob);
 void turnRight(Robot *rob);
 

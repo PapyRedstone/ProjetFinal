@@ -1,12 +1,26 @@
-#include "sdl.h"
 #include "robot.h"
+#include "sdl.h"
 
 int main(int argc, char const *argv[]) {
-  char tmp[1000];
-  FILE *file = fopen("appart.txt", "r");
-  while (fgets(tmp, 1000, file)) {
-    tmp[strlen(tmp) - 1] = '\0';
-    printf("%s\n", tmp);
+  Position mapSize;
+  char **map = initArray("appart.txt", &mapSize);
+
+  Robot marvin = initRobot(getStartPoint(map, mapSize));
+
+  goForward(marvin);
+
+  for (int y = 0; y < mapSize.y; y++) {
+    for (int x = 0; x < mapSize.x; x++) {
+      if (x == marvin.position.x && y == marvin.position.y) {
+        printf("R");
+      } else {
+        printf("%c", map[y][x]);
+      }
+    }
+    printf("\n");
   }
+
+  freeTab2D((void **)map, mapSize);
+
   return 0;
 }

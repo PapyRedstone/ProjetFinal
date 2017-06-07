@@ -3,9 +3,9 @@ OBJ= $(SRC:.c=.o)
 
 CFLAGS = -g -Wall -pedantic
 
-all: robot.out
+all: a.out
 
-robot.out : $(OBJ)
+a.out : $(OBJ)
 	gcc -o $@ $^
 
 %.o: %.c

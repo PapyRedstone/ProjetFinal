@@ -1,4 +1,3 @@
-#include "astar.h"
 #include "pathfinding.h"
 #include "sdl.h"
 
@@ -20,17 +19,16 @@ int main(int argc, char const *argv[]) {
 
   SDL_Surface *screen = initSDL(mapSize, &tileSize);
 
-  SDL_Surface *carpetSurface = IMG_Load("carpet.jpg");
-  SDL_Surface *wallSurface = IMG_Load("wall.jpg");
-  SDL_Surface *doorSurface = IMG_Load("door.png");
-  SDL_Surface *robotSurface = IMG_Load("robot.png");
+  char *robot = "robot.png";
+  char *wall = "wall.jpg";
+  char *door = "door.png";
+  char *carpet = "carpet.jpg";
 
   SDL_Event event;
   int windowIsOpen = 1;
 
-  printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
-            doorSurface);
-  printRobot(marvin.direction, marvin.position, tileSize, screen, robotSurface);
+  printBack(map, mapSize, tileSize, screen, carpet, wall, door);
+  printRobot(marvin.direction, marvin.position, tileSize, screen, robot);
 
   while (windowIsOpen) {
     while (SDL_PollEvent(&event)) {
@@ -41,11 +39,6 @@ int main(int argc, char const *argv[]) {
       }
     }
     if (!checkExit(&marvin, map, mapSize)) {
-      // tmp = astar(marvin, map, mapSize, exitPos);
-
-      // while (tmp != marvin.direction) {
-      //   turnLeft(&marvin);
-      // }
       if (tmp) {
         if (checkWall(&marvin, map, mapSize)) {
           turnRight(&marvin);
@@ -57,17 +50,15 @@ int main(int argc, char const *argv[]) {
       goForward(&marvin, map, mapSize);
     }
 
-    printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
-              doorSurface);
+    printBack(map, mapSize, tileSize, screen, carpet, wall,
+              door);
     printRobot(marvin.direction, marvin.position, tileSize, screen,
-               robotSurface);
+               robot);
   }
 
+  printf("Step : %d \n", marvin.step);
+
   SDL_FreeSurface(screen);
-  SDL_FreeSurface(carpetSurface);
-  SDL_FreeSurface(wallSurface);
-  SDL_FreeSurface(doorSurface);
-  SDL_FreeSurface(robotSurface);
 
   freeTab2D((void **)map, mapSize);
 

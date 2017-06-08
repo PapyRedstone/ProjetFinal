@@ -19,11 +19,11 @@ SDL_Surface *initSDL(Position size, Position *tileSize);
 
 // Affichage de l'appartement
 void printBack(char **map, Position size, Position tileSize,
-               SDL_Surface *screen, SDL_Surface *carpet, SDL_Surface *wall,
-               SDL_Surface *door);
+               SDL_Surface *screen, char *carpet, char *wall,
+               char *door);
 
 // Affichahge du robot
 void printRobot(int direction, Position pos, Position tileSize,
-                SDL_Surface *screen, SDL_Surface *robot);
+                SDL_Surface *screen, char *robot);
 
 #endif

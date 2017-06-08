@@ -24,13 +24,16 @@ SDL_Surface *initSDL(Position size, Position *tileSize) {
   return screen;
 }
 
-void printBack(char **map, Position size, Position tileSize,
-               SDL_Surface *screen, SDL_Surface *carpet, SDL_Surface *wall,
-               SDL_Surface *door) {
+void printBack(char **map, Position size, Position tileSize, SDL_Surface *screen,
+               char *carpet, char *wall, char *door) {
   int y, x;
   float zoom;
   SDL_Surface *img = NULL;
   SDL_Rect src, dest;
+
+  SDL_Surface *carpetSurface = IMG_Load(carpet);
+  SDL_Surface *wallSurface = IMG_Load(wall);
+  SDL_Surface *doorSurface = IMG_Load(door);
 
   src.w = tileSize.x;
   src.h = tileSize.y;
@@ -47,17 +50,17 @@ void printBack(char **map, Position size, Position tileSize,
 
       switch (map[y][x]) {
         case 'x':
-          img = rotozoomSurface(wall, 0.f, zoom, 1);
+          img = rotozoomSurface(wallSurface, 0.f, zoom, 1);
           break;
 
         case 'S':
-          img = rotozoomSurface(door, 0.f, zoom, 1);
+          img = rotozoomSurface(doorSurface, 0.f, zoom, 1);
           break;
 
         case ' ':
         case 'D':
         default:
-          img = rotozoomSurface(carpet, 0.f, zoom, 1);
+          img = rotozoomSurface(carpetSurface, 0.f, zoom, 1);
           break;
       }
       SDL_BlitSurface(img, &src, screen, &dest);
@@ -65,19 +68,25 @@ void printBack(char **map, Position size, Position tileSize,
     }
   }
   SDL_Flip(screen);
+
+  SDL_FreeSurface(carpetSurface);
+  SDL_FreeSurface(wallSurface);
+  SDL_FreeSurface(doorSurface);
 }
 
-void printRobot(int direction, Position pos, Position tileSize,
-                SDL_Surface *screen, SDL_Surface *robot) {
+void printRobot(int direction, Position pos, Position tileSize, SDL_Surface *screen,
+                char *robot) {
   SDL_Surface *img = NULL;
   SDL_Rect src, dest;
+  SDL_Surface *robotSurface = IMG_Load(robot);
+
   float zoom, angle;
 
   zoom = (float)tileSize.x / IMAGESIZE;
 
   angle = -direction * 90.f;
 
-  img = rotozoomSurface(robot, angle, zoom, 1);
+  img = rotozoomSurface(robotSurface, angle, zoom, 1);
 
   dest.x = pos.x * tileSize.x;
   dest.y = pos.y * tileSize.y;
@@ -89,5 +98,6 @@ void printRobot(int direction, Position pos, Position tileSize,
 
   SDL_BlitSurface(img, &src, screen, &dest);
   SDL_FreeSurface(img);
+  SDL_FreeSurface(robotSurface);
   SDL_Flip(screen);
 }

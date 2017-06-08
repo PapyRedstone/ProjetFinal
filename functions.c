@@ -60,81 +60,8 @@ void freeTab2D(void **tab, Position size) {
   free(tab);
 }
 
-Data initData() {
-  Data d;
-  d.lOpen = malloc(sizeof(Node) * 10);
-  d.lClose = malloc(sizeof(Node) * 10);
-  d.sizelOpen = 10;
-  d.sizelClose = 10;
-  d.lastlOpen = 1;
-  d.lastlClose = 1;
-  return d;
-}
-
-Node initNode() {
-  Node n;
-  n.position.x = -1;
-  n.position.y = -1;
-  n.prev = NULL;
-  n.weigh = INT_MAX;
-  return n;
-}
-
 int posEgal(Position pos1, Position pos2) {
   return pos1.x == pos2.x && pos1.y == pos2.y;
-}
-
-int nodeEgal(Node node1, Node node2) {
-  return posEgal(node1.position, node2.position);
-}
-
-Node *getPositionNode(Position pos, Data *data) {
-  int i;
-  Position tmp;
-  for (i = 0; i < data->sizelClose; i++) {
-    tmp = data->lClose[i].position;
-    if (posEgal(tmp, pos)) {
-      return &(data->lClose[i]);
-    }
-  }
-  for (i = 0; i < data->sizelOpen; i++) {
-    tmp = data->lOpen[i].position;
-    if (posEgal(tmp, pos)) {
-      return &(data->lOpen[i]);
-    }
-  }
-  return NULL;
-}
-
-Node *push_back(Node *array, int *arrayLen, int *lastPos, Node val) {
-  if (*lastPos >= *arrayLen - 1) {
-    *arrayLen *= 2;
-    array = realloc(array, sizeof(Node) * *arrayLen);
-    printf("resize array : %d\n", *arrayLen);
-  }
-
-  array[(*lastPos) - 1] = val;
-  (*lastPos)++;
-  return array;
-}
-
-int isEmpty(Node *array, int arraySize) {
-  int i;
-  Position tmp;
-  tmp.x = INT_MAX;
-  tmp.y = INT_MAX;
-  for (i = 0; i < arraySize; i++) {
-    if (!posEgal(tmp, array[i].position)) {
-      return 1;
-    }
-  }
-  return 0;
-}
-
-int nodeCompare(void const *a, void const *b) {
-  const Node *n1 = a;
-  const Node *n2 = b;
-  return n1->weigh - n2->weigh;
 }
 
 int directionTo(Position pos1, Position pos2) {

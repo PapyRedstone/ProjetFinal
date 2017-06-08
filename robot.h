@@ -7,9 +7,16 @@
 
 #include "functions.h"
 
-// Initialisation du robot
+typedef struct {
+  int direction;
+  Position position;
+  unsigned step;
+} Robot;
+
+// Gestion du robot
 Robot initRobot(Position pos);
 Position getStartPoint(char **map, Position size);
+void freeRobot(Robot *rob);
 
 // Mouvement du robot
 void goForward(Robot *rob, char **map, Position size);

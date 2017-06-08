@@ -58,5 +58,6 @@ Node *push_back(Node *array, int *arrayLen, int *lastPos, Node val);
 int isEmpty(Node *array, int arraySize);
 int nodeCompare(void const *a, void const *b);
 int directionTo(Position pos1, Position pos2);
+int posInScreen(Position pos, Position size);
 
 #endif

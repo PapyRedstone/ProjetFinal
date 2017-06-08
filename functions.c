@@ -66,8 +66,8 @@ Data initData() {
   d.lClose = malloc(sizeof(Node) * 10);
   d.sizelOpen = 10;
   d.sizelClose = 10;
-  d.lastlOpen = 0;
-  d.lastlClose = 0;
+  d.lastlOpen = 1;
+  d.lastlClose = 1;
   return d;
 }
 
@@ -107,12 +107,14 @@ Node *getPositionNode(Position pos, Data *data) {
 }
 
 Node *push_back(Node *array, int *arrayLen, int *lastPos, Node val) {
-  if (lastPos >= arrayLen - 1) {
+  if (*lastPos >= *arrayLen - 1) {
     *arrayLen *= 2;
     array = realloc(array, sizeof(Node) * *arrayLen);
+    printf("resize array : %d\n", *arrayLen);
   }
+
+  array[(*lastPos) - 1] = val;
   (*lastPos)++;
-  array[*lastPos] = val;
   return array;
 }
 
@@ -129,26 +131,27 @@ int isEmpty(Node *array, int arraySize) {
   return 0;
 }
 
-int nodeCompare(void const *a, void const *b){
+int nodeCompare(void const *a, void const *b) {
   const Node *n1 = a;
   const Node *n2 = b;
   return n1->weigh - n2->weigh;
 }
 
-int directionTo(Position pos1, Position pos2){
+int directionTo(Position pos1, Position pos2) {
   int x = pos2.x - pos1.x;
   int y = pos2.y - pos1.y;
-  if(x > 0){
+  if (x > 0) {
     return RIGHT;
-  }
-  else if(x < 0){
+  } else if (x < 0) {
     return LEFT;
-  }
-  else if(y > 0){
+  } else if (y > 0) {
     return DOWN;
-  }
-  else if(y < 0){
+  } else if (y < 0) {
     return UP;
   }
   return 0;
+}
+
+int posInScreen(Position pos, Position size) {
+  return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;
 }

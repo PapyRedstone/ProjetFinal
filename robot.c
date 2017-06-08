@@ -62,28 +62,29 @@ void turnRight(Robot *rob) {
 }
 
 int checkWall(Robot *rob, char **map, Position size) {
-  int x = rob->position.x;
-  int y = rob->position.y;
+  Position pos;
+  pos.x = rob->position.x;
+  pos.y = rob->position.y;
   switch (rob->direction) {
     case UP:
-      y--;
+      pos.y--;
       break;
     case DOWN:
-      y++;
+      pos.y++;
       break;
 
     case LEFT:
-      x--;
+      pos.x--;
       break;
 
     case RIGHT:
-      x++;
+      pos.x++;
       break;
   }
-  if (x >= size.x || y >= size.y || x < 0 || y < 0) {
+  if (posInScreen(pos,size)) {
     return 0;
   }
-  return map[y][x] == 'x';
+  return map[pos.y][pos.x] == 'x';
 }
 
 int checkExit(Robot *rob, char **map, Position size) {

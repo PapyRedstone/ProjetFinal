@@ -1,10 +1,12 @@
 #include "astar.h"
+#include "pathfinding.h"
 #include "sdl.h"
 
 int main(int argc, char const *argv[]) {
+  srand(time(NULL));
   Position mapSize, tileSize, exitPos;
   char **map = initArray("appart.txt", &mapSize);
-  int x, y;
+  int x, y, tmp = 1;
   Robot marvin = initRobot(getStartPoint(map, mapSize));  // H2G2
 
   for (y = 0; y < mapSize.y; y++) {
@@ -38,16 +40,22 @@ int main(int argc, char const *argv[]) {
           break;
       }
     }
+    if (!checkExit(&marvin, map, mapSize)) {
+      // tmp = astar(marvin, map, mapSize, exitPos);
 
-    int dir = astar(marvin, map, mapSize, exitPos);
-
-    while (dir != marvin.direction) {
-      turnLeft(&marvin);
+      // while (tmp != marvin.direction) {
+      //   turnLeft(&marvin);
+      // }
+      if (tmp) {
+        if (checkWall(&marvin, map, mapSize)) {
+          turnRight(&marvin);
+          tmp = 0;
+        }
+      } else {
+        followWall(&marvin, map, mapSize);
+      }
+      goForward(&marvin, map, mapSize);
     }
-
-    goForward(&marvin, map, mapSize);
-
-    printf("%d : %d \n", marvin.position.x, marvin.position.y);
 
     printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
               doorSurface);

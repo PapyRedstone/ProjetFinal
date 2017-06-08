@@ -20,6 +20,8 @@ void addAdjacentCase(Position pos, Data *data, char **map, Position size,
   relativePos[3].x = 0;
   relativePos[3].y = -1;
 
+  // printf("%d\n", data->lastlOpen);
+
   for (i = 0; i < 4; i++) {
     // definition du point a etudier
     tmp.position.x = pos.x + relativePos[i].x;
@@ -27,15 +29,13 @@ void addAdjacentCase(Position pos, Data *data, char **map, Position size,
     tmp.prev = getPositionNode(pos, data);
     tmp.weigh = heurastique(tmp.position, final);
 
-    // Verification des bornes
-    if (tmp.position.x >= size.x || tmp.position.x < 0 ||
-        tmp.position.y >= size.y || tmp.position.y < 0) {
+    if (posInScreen(tmp.position, size)) {
       continue;
     }
 
     // Verifie que ce n'est pas un mur
     if (map[tmp.position.y][tmp.position.x] == 'x') {
-      break;
+      continue;
     }
 
     // on verifie qu'il n'as pas ete visite
@@ -52,12 +52,13 @@ void addAdjacentCase(Position pos, Data *data, char **map, Position size,
         if (tmp.weigh < data->lOpen[i].weigh) {
           data->lOpen[i] = tmp;
         } else {  // si il est absent on l'ajoute a la liste a etudier
-          data->lOpen =
-              push_back(data->lOpen, &data->sizelOpen, &data->lastlOpen, tmp);
+          data->lOpen = push_back(data->lOpen, &(data->sizelOpen),
+                                  &(data->lastlOpen), tmp);
         }
       }
     }
   }
+  printf("%d\n", data->lastlOpen);
 }
 
 int astar(Robot rob, char **map, Position size, Position final) {
@@ -65,14 +66,15 @@ int astar(Robot rob, char **map, Position size, Position final) {
   Node tmp = initNode(), next;
   tmp.position = rob.position;
   addAdjacentCase(tmp.position, &data, map, size, final);
-  data.lClose = push_back(data.lClose, &data.sizelClose, &data.lastlClose, tmp);
+  data.lClose =
+      push_back(data.lClose, &(data.sizelClose), &(data.lastlClose), tmp);
 
   while (!posEgal(tmp.position, final) && isEmpty(data.lOpen, data.lastlOpen)) {
     qsort(data.lOpen, data.lastlOpen, sizeof(Node), &nodeCompare);
     tmp = data.lOpen[0];
     addAdjacentCase(tmp.position, &data, map, size, final);
     data.lClose =
-        push_back(data.lClose, &data.sizelClose, &data.lastlClose, tmp);
+        push_back(data.lClose, &(data.sizelClose), &(data.lastlClose), tmp);
     data.lOpen[0] = initNode();
   }
 

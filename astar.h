@@ -8,6 +8,7 @@
 
 // Fonctions d'aides pour A*
 int heurastique(Position pos1, Position pos2);
-void addAdjacentCase(Robot rob, Data *data, char **map, Position size);
+void addAdjacentCase(Robot rob, Data *data, char **map, Position size,
+                     Position final);
 
 #endif

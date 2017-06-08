@@ -14,8 +14,14 @@
 
 typedef struct { int x, y; } Position;
 
+typedef struct Node {
+  Position position;
+  struct Node *prev;
+  int weigh;
+} Node;
+
 typedef struct {
-  Position *lOpen, *lClose;
+  Node *lOpen, *lClose;
   int sizelOpen, sizelClose;
   int lastlOpen, lastlClose;
 } Data;
@@ -30,12 +36,17 @@ typedef struct {
 // Fonction retournant une ligne d'un fichier
 char *getFromFile(char *str, int maxLen, FILE *file);
 
-//Gestion des datas
+// Gestion des datas
 Data initData();
+Node initNode();
 
-
-//Gestion du tableau
+// Gestion du tableau
 char **initArray(char *filename, Position *maxPos);
 void freeTab2D(void **tab, Position size);
+
+//Utilitaire
+int posEgal(Position pos1, Position pos2);
+int nodeEgal(Node node1, Node node2);
+Node *getRobotNode(Robot rob, Data *data);
 
 #endif

@@ -4,10 +4,11 @@ int heurastique(Position pos1, Position pos2) {
   return abs(pos1.x - pos1.x) + abs(pos1.y - pos2.y);
 }
 
-void addAdjacentCase(Robot rob, Data *data, char **map, Position size) {
+void addAdjacentCase(Robot rob, Data *data, char **map, Position size,
+                     Position final) {
   Position relativePos[4];
-  int i;
-  Position tmp;
+  int i, j;
+  Node tmp;
 
   // Definition des quatres coordonnes a cote du robot
   relativePos[0].x = 1;
@@ -20,18 +21,42 @@ void addAdjacentCase(Robot rob, Data *data, char **map, Position size) {
   relativePos[3].y = -1;
 
   for (i = 0; i < 4; i++) {
-    tmp.x = rob.position.x + relativePos[i].x;
-    tmp.y = rob.position.y + relativePos[i].y;
+    // definition du point a etudier
+    tmp.position.x = rob.position.x + relativePos[i].x;
+    tmp.position.y = rob.position.y + relativePos[i].y;
+    tmp.prev = getRobotNode(rob, data);
+    tmp.weigh = heurastique(tmp.position, final);
 
-    //Verification des bornes
-    if (tmp.x >= size.x || tmp.x < 0 || tmp.y >= size.y || tmp.y < 0) {
+    // Verification des bornes
+    if (tmp.position.x >= size.x || tmp.position.x < 0 ||
+        tmp.position.y >= size.y || tmp.position.y < 0) {
+      continue;
+    }
+
+    // Verifie que ce n'est pas un mur
+    if (map[tmp.position.y][tmp.position.x] == 'x') {
       break;
     }
 
-    //Verifie que ce n'est pas un mur
-    if(map[tmp.y][tmp.x] == 'x'){
-      break;
+    // on verifie qu'il n'as pas ete visite
+    for (j = 0; j < data->lastlClose; j++) {
+      if (nodeEgal(data->lClose[j], tmp)) {
+        break;
+      }
     }
 
+    // On verifie si il est dans la liste a visiter
+    for (j = 0; j < data->lastlOpen; j++) {
+      if (nodeEgal(data->lOpen[i], tmp)) {
+        if (tmp.weigh < data->lOpen[i].weigh) {
+          data->lOpen[i] = tmp;
+        } else {
+          if (i >= data->sizelOpen - 1) {
+            data->sizelOpen *= 2;
+            data->lOpen = realloc(data->lOpen, data->sizelOpen * sizeof(Node));
+          }
+        }
+      }
+    }
   }
 }

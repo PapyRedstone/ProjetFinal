@@ -6,6 +6,8 @@ int main(int argc, char const *argv[]) {
   char **map = initArray("appart.txt", &mapSize);
 
   Robot marvin = initRobot(getStartPoint(map, mapSize));  // H2G2
+  turnLeft(&marvin);
+  goForward(&marvin);
 
   SDL_Surface *screen = initSDL(mapSize, &tileSize);
 

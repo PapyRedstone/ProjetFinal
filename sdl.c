@@ -72,7 +72,7 @@ void printRobot(int direction, Position pos, Position tileSize,
 
   zoom = (float)tileSize.x / IMAGESIZE;
 
-  angle = direction * 90.f;
+  angle = -direction * 90.f;
 
   img = rotozoomSurface(robot, angle, zoom, 1);
 

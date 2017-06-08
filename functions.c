@@ -62,11 +62,46 @@ void freeTab2D(void **tab, Position size) {
 
 Data initData() {
   Data d;
-  d.lOpen = malloc(sizeof(Position) * 10);
-  d.lClose = malloc(sizeof(Position) * 10);
+  d.lOpen = malloc(sizeof(Node) * 10);
+  d.lClose = malloc(sizeof(Node) * 10);
   d.sizelOpen = 10;
   d.sizelClose = 10;
   d.lastlOpen = 0;
   d.lastlClose = 0;
   return d;
+}
+
+Node initNode() {
+  Node n;
+  n.position.x = -1;
+  n.position.y = -1;
+  n.prev = NULL;
+  n.weigh = 0;
+  return n;
+}
+
+int posEgal(Position pos1, Position pos2) {
+  return pos1.x == pos2.x && pos1.y == pos2.y;
+}
+
+int nodeEgal(Node node1, Node node2) {
+  return posEgal(node1.position, node2.position);
+}
+
+Node *getRobotNode(Robot rob, Data *data) {
+  int i;
+  Position tmp;
+  for (i = 0; i < data->sizelClose; i++) {
+    tmp = data->lClose[i].position;
+    if (posEgal(tmp, rob.position)) {
+      return &(data->lClose[i]);
+    }
+  }
+  for (i = 0; i < data->sizelOpen; i++) {
+    tmp = data->lOpen[i].position;
+    if (posEgal(tmp, rob.position)) {
+      return &(data->lOpen[i]);
+    }
+  }
+  return NULL;
 }

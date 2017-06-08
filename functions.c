@@ -59,3 +59,14 @@ void freeTab2D(void **tab, Position size) {
   }
   free(tab);
 }
+
+Data initData() {
+  Data d;
+  d.lOpen = malloc(sizeof(Position) * 10);
+  d.lClose = malloc(sizeof(Position) * 10);
+  d.sizelOpen = 10;
+  d.sizelClose = 10;
+  d.lastlOpen = 0;
+  d.lastlClose = 0;
+  return d;
+}

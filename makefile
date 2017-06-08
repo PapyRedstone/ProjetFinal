@@ -2,7 +2,7 @@ SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 
 CFLAGS = -g -Wall -pedantic -O3
-LDFLAGS = -lSDL -lSDL_image
+LDFLAGS = -lSDL -lSDL_image -lSDL_gfx
 
 all: a.out
 

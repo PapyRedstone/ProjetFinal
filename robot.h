@@ -2,19 +2,15 @@
 //    Fichier de gestion de la logique
 //    du robot
 //=============================================================================
+#ifndef ROBOT_H
+#define ROBOT_H
+
 #include "functions.h"
-#include "astar.h"
 
 #define UP 0
 #define RIGHT 1
 #define DOWN 2
 #define LEFT 3
-
-typedef struct {
-  int direction;
-  Position position;
-  unsigned step;
-} Robot;
 
 // Initialisation du robot
 Robot initRobot(Position pos);
@@ -28,3 +24,5 @@ void turnRight(Robot *rob);
 // Capteurs du robot
 int checkWall(Robot *rob, char **map, Position size);
 int checkExit(Robot *rob, char **map, Position size);
+
+#endif

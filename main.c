@@ -1,32 +1,19 @@
-#include "robot.h"
+#include "astar.h"
 #include "sdl.h"
 
 int main(int argc, char const *argv[]) {
-  Position mapSize, *tileSize = malloc(sizeof(Position));
+  Position mapSize, tileSize;
   char **map = initArray("appart.txt", &mapSize);
 
-  // Robot marvin = initRobot(getStartPoint(map, mapSize));
-  // turnLeft(&marvin); // H2G2
-  // goForward(&marvin);
+  Robot marvin = initRobot(getStartPoint(map, mapSize));  // H2G2
 
-  // for (int y = 0; y < mapSize.y; y++) {
-  //   for (int x = 0; x < mapSize.x; x++) {
-  //     if (x == marvin.position.x && y == marvin.position.y) {
-  //       printf("R");
-  //     } else {
-  //       printf("%c", map[y][x]);
-  //     }
-  //   }
-  //   printf("\n");
-  // }
+  SDL_Surface *screen = initSDL(mapSize, &tileSize);
 
-  // freeTab2D((void **)map, mapSize);
-  SDL_Surface *screen = initSDL(mapSize, tileSize);
+  SDL_Surface *carpetSurface = IMG_Load("carpet.jpg");
+  SDL_Surface *wallSurface = IMG_Load("wall.jpg");
+  SDL_Surface *doorSurface = IMG_Load("door.png");
+  SDL_Surface *robotSurface = IMG_Load("robot.png");
 
-  SDL_Surface *back = initBackground("carpet.jpg","wall.jpg", "door.png", map, mapSize, *tileSize);
-  
-  SDL_BlitSurface(back, NULL, screen, NULL);
-  SDL_Flip(screen);
   SDL_Event event;
   int windowIsOpen = 1;
   while (windowIsOpen) {
@@ -37,10 +24,21 @@ int main(int argc, char const *argv[]) {
           break;
       }
     }
+    printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
+              doorSurface);
+    printRobot(marvin.direction, marvin.position, tileSize, screen,
+               robotSurface);
   }
 
   SDL_FreeSurface(screen);
-  SDL_FreeSurface(back);
+  SDL_FreeSurface(carpetSurface);
+  SDL_FreeSurface(wallSurface);
+  SDL_FreeSurface(doorSurface);
+  SDL_FreeSurface(robotSurface);
+
+  freeTab2D((void **)map, mapSize);
+
+  SDL_Quit();
 
   return 0;
 }

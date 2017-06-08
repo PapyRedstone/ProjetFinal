@@ -5,6 +5,7 @@ Robot initRobot(Position pos) {
   rob.position = pos;
   rob.direction = UP;
   rob.step = 0;
+  rob.data = initData();
   return rob;
 }
 

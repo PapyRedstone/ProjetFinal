@@ -13,73 +13,78 @@ SDL_Surface *initSDL(Position size, Position *tileSize) {
     return NULL;
   }
 
+  SDL_WM_SetCaption("Robot perdu en perdition dans un appartement perdu", NULL);
+
   tileSize->x = SCREEN_W / size.x;
   tileSize->y = SCREEN_H / size.y;
 
   return screen;
 }
 
-SDL_Surface *initBackground(char *carpetFile, char *wallFile, char *doorFile,
-                            char **map, Position size, Position tileSize) {
-  SDL_Surface *back =
-      initBlankSurface(size.x * tileSize.x, size.y * tileSize.y);
-  SDL_Surface *carpet = IMG_Load(carpetFile);
-  SDL_Surface *door = IMG_Load(doorFile);
-  SDL_Surface *wall = IMG_Load(wallFile);
-  SDL_Rect rect_src;
+void printBack(char **map, Position size, Position tileSize,
+               SDL_Surface *screen, SDL_Surface *carpet, SDL_Surface *wall,
+               SDL_Surface *door) {
   int y, x;
+  float zoom;
+  SDL_Surface *img = NULL;
+  SDL_Rect src, dest;
+
+  src.w = tileSize.x;
+  src.h = tileSize.y;
+
+  zoom = (float)tileSize.x / IMAGESIZE;
 
   for (y = 0; y < size.y; y++) {
     for (x = 0; x < size.x; x++) {
-      // rect_src.x = tileSize.x;
-      // rect_src.y = tileSize.y;
-      rect_src.w = tileSize.x;
-      rect_src.h = tileSize.y;
+      dest.x = x * tileSize.x;
+      dest.y = y * tileSize.y;
+
+      src.x = 0;
+      src.y = 0;
 
       switch (map[y][x]) {
-        case ' ':
-          SDL_BlitSurface(carpet, &rect_src, back, NULL);
-          break;
         case 'x':
-          SDL_BlitSurface(wall, &rect_src, back, NULL);
+          img = rotozoomSurface(wall, 0.f, zoom, 1);
           break;
+
         case 'S':
-          SDL_BlitSurface(door, &rect_src, back, NULL);
+          img = rotozoomSurface(door, 0.f, zoom, 1);
+          break;
+
+        case ' ':
+        case 'D':
+        default:
+          img = rotozoomSurface(carpet, 0.f, zoom, 1);
           break;
       }
+      SDL_BlitSurface(img, &src, screen, &dest);
+      SDL_FreeSurface(img);
     }
   }
-
-  SDL_FreeSurface(carpet);
-  SDL_FreeSurface(wall);
-  SDL_FreeSurface(door);
-
-  return back;
+  SDL_Flip(screen);
 }
 
-SDL_Surface *initBlankSurface(int width, int height) {
-  SDL_Surface *surface;
-  Uint32 rmask, gmask, bmask, amask;
+void printRobot(int direction, Position pos, Position tileSize,
+                SDL_Surface *screen, SDL_Surface *robot) {
+  SDL_Surface *img = NULL;
+  SDL_Rect src, dest;
+  float zoom, angle;
 
-/* SDL interprets each pixel as a 32-bit number, so our masks must depend
-   on the endianness (byte order) of the machine */
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  rmask = 0xff000000;
-  gmask = 0x00ff0000;
-  bmask = 0x0000ff00;
-  amask = 0x000000ff;
-#else
-  rmask = 0x000000ff;
-  gmask = 0x0000ff00;
-  bmask = 0x00ff0000;
-  amask = 0xff000000;
-#endif
+  zoom = (float)tileSize.x / IMAGESIZE;
 
-  surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, rmask, gmask,
-                                 bmask, amask);
-  if (surface == NULL) {
-    fprintf(stderr, "CreateRGBSurface failed: %s\n", SDL_GetError());
-    return NULL;
-  }
-  return surface;
+  angle = direction * 90.f;
+
+  img = rotozoomSurface(robot, angle, zoom, 1);
+
+  dest.x = pos.x * tileSize.x;
+  dest.y = pos.y * tileSize.y;
+
+  src.w = tileSize.x;
+  src.h = tileSize.y;
+  src.x = 0;
+  src.y = 0;
+
+  SDL_BlitSurface(img, &src, screen, &dest);
+  SDL_FreeSurface(img);
+  SDL_Flip(screen);
 }

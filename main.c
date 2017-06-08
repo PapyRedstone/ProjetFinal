@@ -17,27 +17,16 @@ int main(int argc, char const *argv[]) {
     }
   }
 
-  SDL_Surface *screen = initSDL(mapSize, &tileSize);
+  Graph graph = initGraph(mapSize, &tileSize, "carpet.jpg", "wall.jpg",
+                          "door.png", "robot.png");
 
-  char *robot = "robot.png";
-  char *wall = "wall.jpg";
-  char *door = "door.png";
-  char *carpet = "carpet.jpg";
-
-  SDL_Event event;
   int windowIsOpen = 1;
 
-  printBack(map, mapSize, tileSize, screen, carpet, wall, door);
-  printRobot(marvin.direction, marvin.position, tileSize, screen, robot);
+  printBack(map, mapSize, tileSize, graph);
+  printRobot(marvin.direction, marvin.position, tileSize, graph);
 
   while (windowIsOpen) {
-    while (SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_QUIT:
-          windowIsOpen = 0;
-          break;
-      }
-    }
+    windowIsOpen = handleEvent();
     if (!checkExit(&marvin, map, mapSize)) {
       if (tmp) {
         if (checkWall(&marvin, map, mapSize)) {
@@ -47,22 +36,21 @@ int main(int argc, char const *argv[]) {
       } else {
         followWall(&marvin, map, mapSize);
       }
+      clearPosition(marvin.position, graph, tileSize);
       goForward(&marvin, map, mapSize);
     }
 
-    printBack(map, mapSize, tileSize, screen, carpet, wall,
-              door);
-    printRobot(marvin.direction, marvin.position, tileSize, screen,
-               robot);
+    printRobot(marvin.direction, marvin.position, tileSize, graph);
+    SDL_Delay(25);
   }
 
   printf("Step : %d \n", marvin.step);
 
-  SDL_FreeSurface(screen);
+  freeGraph(graph);
 
   freeTab2D((void **)map, mapSize);
 
-  SDL_Quit();
+  freeSDL();
 
   return 0;
 }

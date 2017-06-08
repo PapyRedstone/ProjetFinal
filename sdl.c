@@ -24,16 +24,46 @@ SDL_Surface *initSDL(Position size, Position *tileSize) {
   return screen;
 }
 
-void printBack(char **map, Position size, Position tileSize, SDL_Surface *screen,
-               char *carpet, char *wall, char *door) {
+Graph initGraph(Position size, Position *tileSize, char *carpet, char *wall,
+                char *door, char *robot) {
+  Graph g;
+  g.screen = initSDL(size, tileSize);
+  g.carpet = IMG_Load(carpet);
+  g.wall = IMG_Load(wall);
+  g.door = IMG_Load(door);
+  g.robot = IMG_Load(robot);
+  return g;
+}
+
+void freeGraph(Graph g) {
+  SDL_FreeSurface(g.wall);
+  SDL_FreeSurface(g.door);
+  SDL_FreeSurface(g.carpet);
+  SDL_FreeSurface(g.robot);
+  SDL_FreeSurface(g.screen);
+}
+
+void freeSDL(){
+  SDL_Quit();
+}
+
+int handleEvent() {
+  SDL_Event event;
+  while (SDL_PollEvent(&event)) {
+    switch (event.type) {
+      case SDL_QUIT:
+        return 0;
+        break;
+    }
+  }
+  return 1;
+}
+
+void printBack(char **map, Position size, Position tileSize, Graph graph) {
   int y, x;
   float zoom;
   SDL_Surface *img = NULL;
   SDL_Rect src, dest;
-
-  SDL_Surface *carpetSurface = IMG_Load(carpet);
-  SDL_Surface *wallSurface = IMG_Load(wall);
-  SDL_Surface *doorSurface = IMG_Load(door);
 
   src.w = tileSize.x;
   src.h = tileSize.y;
@@ -50,35 +80,29 @@ void printBack(char **map, Position size, Position tileSize, SDL_Surface *screen
 
       switch (map[y][x]) {
         case 'x':
-          img = rotozoomSurface(wallSurface, 0.f, zoom, 1);
+          img = rotozoomSurface(graph.wall, 0.f, zoom, 1);
           break;
 
         case 'S':
-          img = rotozoomSurface(doorSurface, 0.f, zoom, 1);
+          img = rotozoomSurface(graph.door, 0.f, zoom, 1);
           break;
 
         case ' ':
         case 'D':
         default:
-          img = rotozoomSurface(carpetSurface, 0.f, zoom, 1);
+          img = rotozoomSurface(graph.carpet, 0.f, zoom, 1);
           break;
       }
-      SDL_BlitSurface(img, &src, screen, &dest);
+      SDL_BlitSurface(img, &src, graph.screen, &dest);
       SDL_FreeSurface(img);
     }
   }
-  SDL_Flip(screen);
-
-  SDL_FreeSurface(carpetSurface);
-  SDL_FreeSurface(wallSurface);
-  SDL_FreeSurface(doorSurface);
+  SDL_Flip(graph.screen);
 }
 
-void printRobot(int direction, Position pos, Position tileSize, SDL_Surface *screen,
-                char *robot) {
+void printRobot(int direction, Position pos, Position tileSize, Graph graph) {
   SDL_Surface *img = NULL;
   SDL_Rect src, dest;
-  SDL_Surface *robotSurface = IMG_Load(robot);
 
   float zoom, angle;
 
@@ -86,7 +110,7 @@ void printRobot(int direction, Position pos, Position tileSize, SDL_Surface *scr
 
   angle = -direction * 90.f;
 
-  img = rotozoomSurface(robotSurface, angle, zoom, 1);
+  img = rotozoomSurface(graph.robot, angle, zoom, 1);
 
   dest.x = pos.x * tileSize.x;
   dest.y = pos.y * tileSize.y;
@@ -96,8 +120,30 @@ void printRobot(int direction, Position pos, Position tileSize, SDL_Surface *scr
   src.x = 0;
   src.y = 0;
 
-  SDL_BlitSurface(img, &src, screen, &dest);
+  SDL_BlitSurface(img, &src, graph.screen, &dest);
   SDL_FreeSurface(img);
-  SDL_FreeSurface(robotSurface);
-  SDL_Flip(screen);
+  SDL_Flip(graph.screen);
+}
+
+void clearPosition(Position pos, Graph graph, Position tileSize) {
+  SDL_Surface *img = NULL;
+  SDL_Rect src, dest;
+
+  float zoom;
+
+  zoom = (float)tileSize.x / IMAGESIZE;
+
+  img = rotozoomSurface(graph.carpet, 0.f, zoom, 1);
+
+  dest.x = pos.x * tileSize.x;
+  dest.y = pos.y * tileSize.y;
+
+  src.w = tileSize.x;
+  src.h = tileSize.y;
+  src.x = 0;
+  src.y = 0;
+
+  SDL_BlitSurface(img, &src, graph.screen, &dest);
+  SDL_FreeSurface(img);
+  SDL_Flip(graph.screen);
 }

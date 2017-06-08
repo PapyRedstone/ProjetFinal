@@ -2,12 +2,19 @@
 #include "sdl.h"
 
 int main(int argc, char const *argv[]) {
-  Position mapSize, tileSize;
+  Position mapSize, tileSize, exitPos;
   char **map = initArray("appart.txt", &mapSize);
-
+  int x, y;
   Robot marvin = initRobot(getStartPoint(map, mapSize));  // H2G2
-  turnLeft(&marvin);
-  goForward(&marvin);
+
+  for (y = 0; y < mapSize.y; y++) {
+    for (x = 0; x < mapSize.x; x++) {
+      if (map[y][x] == 'S') {
+        exitPos.x = x;
+        exitPos.y = y;
+      }
+    }
+  }
 
   SDL_Surface *screen = initSDL(mapSize, &tileSize);
 
@@ -18,6 +25,11 @@ int main(int argc, char const *argv[]) {
 
   SDL_Event event;
   int windowIsOpen = 1;
+
+  printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
+            doorSurface);
+  printRobot(marvin.direction, marvin.position, tileSize, screen, robotSurface);
+
   while (windowIsOpen) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
@@ -26,6 +38,17 @@ int main(int argc, char const *argv[]) {
           break;
       }
     }
+
+    int dir = astar(marvin, map, mapSize, exitPos);
+
+    while (dir != marvin.direction) {
+      turnLeft(&marvin);
+    }
+
+    goForward(&marvin, map, mapSize);
+
+    printf("%d : %d \n", marvin.position.x, marvin.position.y);
+
     printBack(map, mapSize, tileSize, screen, carpetSurface, wallSurface,
               doorSurface);
     printRobot(marvin.direction, marvin.position, tileSize, screen,

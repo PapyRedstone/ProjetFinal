@@ -7,17 +7,12 @@
 
 #include "functions.h"
 
-#define UP 0
-#define RIGHT 1
-#define DOWN 2
-#define LEFT 3
-
 // Initialisation du robot
 Robot initRobot(Position pos);
 Position getStartPoint(char **map, Position size);
 
 // Mouvement du robot
-void goForward(Robot *rob);
+void goForward(Robot *rob, char **map, Position size);
 void turnLeft(Robot *rob);
 void turnRight(Robot *rob);
 

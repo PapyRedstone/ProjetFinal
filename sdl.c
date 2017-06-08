@@ -13,7 +13,10 @@ SDL_Surface *initSDL(Position size, Position *tileSize) {
     return NULL;
   }
 
-  SDL_WM_SetCaption("Robot perdu en perdition dans un appartement perdu", NULL);
+  SDL_WM_SetCaption(
+      "Robot perdu en perdition dans un appartement perdu qui perdurera (peut "
+      "etre)",
+      NULL);
 
   tileSize->x = SCREEN_W / size.x;
   tileSize->y = SCREEN_H / size.y;

@@ -9,8 +9,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 
 #define BUFFLEN 1000
+#define UP 0
+#define RIGHT 1
+#define DOWN 2
+#define LEFT 3
 
 typedef struct { int x, y; } Position;
 
@@ -44,9 +49,14 @@ Node initNode();
 char **initArray(char *filename, Position *maxPos);
 void freeTab2D(void **tab, Position size);
 
-//Utilitaire
+// Utilitaire
 int posEgal(Position pos1, Position pos2);
 int nodeEgal(Node node1, Node node2);
-Node *getRobotNode(Robot rob, Data *data);
+Node *getPositionNode(Position pos, Data *data);
+
+Node *push_back(Node *array, int *arrayLen, int *lastPos, Node val);
+int isEmpty(Node *array, int arraySize);
+int nodeCompare(void const *a, void const *b);
+int directionTo(Position pos1, Position pos2);
 
 #endif

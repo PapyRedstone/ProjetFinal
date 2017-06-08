@@ -27,7 +27,10 @@ Position getStartPoint(char **map, Position size) {
   return tmp;
 }
 
-void goForward(Robot *rob) {
+void goForward(Robot *rob, char **map, Position size) {
+  if (checkWall(rob, map, size)) {
+    return;
+  }
   switch (rob->direction) {
     case UP:
       rob->position.y--;
@@ -80,7 +83,7 @@ int checkWall(Robot *rob, char **map, Position size) {
   if (x >= size.x || y >= size.y || x < 0 || y < 0) {
     return 0;
   }
-  return map[y][x] = 'x';
+  return map[y][x] == 'x';
 }
 
 int checkExit(Robot *rob, char **map, Position size) {

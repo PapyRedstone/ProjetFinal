@@ -48,13 +48,15 @@ void addAdjacentCase(Robot rob, Data *data, char **map, Position size,
     // On verifie si il est dans la liste a visiter
     for (j = 0; j < data->lastlOpen; j++) {
       if (nodeEgal(data->lOpen[i], tmp)) {
+        //Si il est meilleur que le noeud present on le remplace
         if (tmp.weigh < data->lOpen[i].weigh) {
           data->lOpen[i] = tmp;
-        } else {
+        } else {//si il est absent on l'ajoute a la liste a etudier
           if (i >= data->sizelOpen - 1) {
             data->sizelOpen *= 2;
             data->lOpen = realloc(data->lOpen, data->sizelOpen * sizeof(Node));
           }
+          data->lOpen[data->lastlOpen++] = tmp;
         }
       }
     }

@@ -16,11 +16,13 @@ int main(int argc, char *argv[]) {
   Graph graph = initGraph(mapSize, &tileSize, "carpet.jpg", "wall.jpg",
                           "door.png", "robot.png");
 
+  PythonObj *python = initCython();
+
   int windowIsOpen = 1;
 
   printBack(map, mapSize, tileSize, graph);
   printRobot(marvin.direction, marvin.position, tileSize, graph);
-  windowIsOpen = 0;
+
   while (windowIsOpen) {
     windowIsOpen = handleEvent();
     if (!checkExit(&marvin, map, mapSize)) {
@@ -30,13 +32,16 @@ int main(int argc, char *argv[]) {
           wallFind = 1;
         }
       } else {
-        searchNextPos(&marvin, map, mapSize);
+        searchNextPos(&marvin, map, mapSize, python, argv[1]);
       }
       clearPosition(marvin.position, graph, tileSize);
       goForward(&marvin, map, mapSize);
     }
 
     printRobot(marvin.direction, marvin.position, tileSize, graph);
+    if(marvin.block){
+      wait(80);
+    }
     wait(20);
 
     printf("\n\n\n");
@@ -48,13 +53,15 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  aStar(&marvin, argv[1]);
+  //aStar(&marvin, argv[1], python);
 
   printf("Step : %d \n", marvin.step);
 
   freeGraph(graph);
 
   freeTab2D((void **)map, mapSize);
+
+  freeCython(python);
 
   return 0;
 }

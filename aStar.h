@@ -1,5 +1,4 @@
 #include "functions.h"
 #include "robot.h"
-#include <python3.5/Python.h>
 
-int aStar(Robot *rob, char *filename);
+int astar(Robot *rob, char *filename, PythonObj *python);

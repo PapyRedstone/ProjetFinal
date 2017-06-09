@@ -17,16 +17,17 @@ void followWall(Robot *rob, char **map, Position size) {
   }
 }
 
-int robotBlock(Robot *rob) {
+int checkRobotBlock(Robot *rob) {
   int i;
+  rob->block = 1;
   for (i = 0; i < 4; i++) {
     if (!(checkChar(rob, rob->memory, rob->mapSize, '.') ||
           checkWall(rob, rob->memory, rob->mapSize))) {
-      rob->block = 0; return 0;
+      rob->block = 0;
+      return 0;
     }
     turnLeft(rob);
   }
-  rob->block = 1;
   return 1;
 }
 
@@ -52,18 +53,21 @@ int positionBlock(Position pos, char **map, Position size) {
   return 1;
 }
 
-void searchNextPos(Robot *rob, char **map, Position size) {
+void searchNextPos(Robot *rob, char **map, Position size, PythonObj *python,
+                   char *filename) {
   rob->path = addFront(rob->position, rob->path);
   int result;
 
-  robotBlock(rob);
+  checkRobotBlock(rob);
   // Si le robot est bloque on revient sur ses pas
   if (rob->block) {
     while (positionBlock(rob->path->position, rob->memory, rob->mapSize)) {
       rob->path = popFront(rob->path);
     }
-    printf("%d : %d\n", rob->path->position.x, rob->path->position.y);
-    while (rob->direction != directionTo(rob->position, rob->path->position)) {
+    printf("rob : %d,%d\n", rob->position.x, rob->position.y);
+    printf("target : %d,%d\n", rob->path->position.x, rob->path->position.y);
+    printf("dir : %d\n", astar(rob, filename, python));
+    while (rob->direction != astar(rob, filename, python)) {
       turnLeft(rob);
     }
   } else {

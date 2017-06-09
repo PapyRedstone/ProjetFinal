@@ -1,0 +1,16 @@
+Rapport
+
+2 à 6 pages
+
+Intro
+Install/Exe :
+	lib necessaire
+	rep/images/sons
+	commande de compil/install et d'exe
+
+Fonctionnement
+	algo + copie si necessaire
+
+Conclusion
+	difficulte
+	apport

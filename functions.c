@@ -82,3 +82,23 @@ int directionTo(Position pos1, Position pos2) {
 int posInScreen(Position pos, Position size) {
   return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;
 }
+
+Data *addFront(Position pos, Data *data) {
+  Data *d = malloc(sizeof(Data));
+  d->position = pos;
+  d->prev = data;
+  return d;
+}
+
+Data *popFront(Data *data) {
+  Data *tmp = data->prev;
+  free(data);
+  return tmp;
+}
+
+void freeData(Data *data) {
+  Data *cur = data;
+  while (cur) {
+    popFront(cur);
+  }
+}

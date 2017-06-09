@@ -8,15 +8,16 @@
 #include "functions.h"
 
 typedef struct {
-  int direction;
-  Position position;
+  int direction, firstTour, block;
+  Position position, mapSize;
   unsigned step;
+  char **memory;
+  Data *path;
 } Robot;
 
 // Gestion du robot
-Robot initRobot(Position pos);
+Robot initRobot(Position pos, Position size);
 Position getStartPoint(char **map, Position size);
-void freeRobot(Robot *rob);
 
 // Mouvement du robot
 void goForward(Robot *rob, char **map, Position size);
@@ -26,5 +27,7 @@ void turnRight(Robot *rob);
 // Capteurs du robot
 int checkWall(Robot *rob, char **map, Position size);
 int checkExit(Robot *rob, char **map, Position size);
+int checkChar(Robot *rob, char **map, Position size, char c);
+
 
 #endif

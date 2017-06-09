@@ -1,10 +1,21 @@
 #include "robot.h"
 
-Robot initRobot(Position pos) {
+Robot initRobot(Position pos, Position size) {
   Robot rob;
   rob.position = pos;
   rob.direction = UP;
   rob.step = 0;
+  rob.path = NULL;
+  rob.memory = malloc(size.y * sizeof(char *));
+  rob.mapSize = size;
+  rob.block = 0;
+  rob.firstTour = 1;
+  for (int i = 0; i < size.y; i++) {
+    rob.memory[i] = malloc(size.x * sizeof(char));
+    for (int j = 0; j < size.x; j++) {
+      rob.memory[i][j] = ' ';
+    }
+  }
   return rob;
 }
 
@@ -45,6 +56,7 @@ void goForward(Robot *rob, char **map, Position size) {
       break;
   }
   rob->step++;
+  rob->memory[rob->position.y][rob->position.x] = '.';
 }
 
 void turnLeft(Robot *rob) {
@@ -80,10 +92,39 @@ int checkWall(Robot *rob, char **map, Position size) {
       pos.x++;
       break;
   }
-  if (posInScreen(pos,size)) {
+  if (posInScreen(pos, size)) {
     return 0;
   }
+  if (map[pos.y][pos.x] == 'x') {
+    rob->memory[pos.y][pos.x] = 'x';
+  }
   return map[pos.y][pos.x] == 'x';
+}
+
+int checkChar(Robot *rob, char **map, Position size, char c) {
+  Position pos;
+  pos.x = rob->position.x;
+  pos.y = rob->position.y;
+  switch (rob->direction) {
+    case UP:
+      pos.y--;
+      break;
+    case DOWN:
+      pos.y++;
+      break;
+
+    case LEFT:
+      pos.x--;
+      break;
+
+    case RIGHT:
+      pos.x++;
+      break;
+  }
+  if (posInScreen(pos, size)) {
+    return 0;
+  }
+  return map[pos.y][pos.x] == c;
 }
 
 int checkExit(Robot *rob, char **map, Position size) {

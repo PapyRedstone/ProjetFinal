@@ -41,9 +41,6 @@ void freeGraph(Graph g) {
   SDL_FreeSurface(g.carpet);
   SDL_FreeSurface(g.robot);
   SDL_FreeSurface(g.screen);
-}
-
-void freeSDL(){
   SDL_Quit();
 }
 
@@ -146,4 +143,8 @@ void clearPosition(Position pos, Graph graph, Position tileSize) {
   SDL_BlitSurface(img, &src, graph.screen, &dest);
   SDL_FreeSurface(img);
   SDL_Flip(graph.screen);
+}
+
+void wait(int time){
+  SDL_Delay(time);
 }

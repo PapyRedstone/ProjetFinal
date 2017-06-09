@@ -21,7 +21,6 @@ typedef struct {
 
 // Initialisaton de la SDL et de la fenetre
 SDL_Surface *initSDL(Position size, Position *tileSize);
-void freeSDL();
 
 // Gestion des donnes de la SDL
 Graph initGraph(Position size, Position *tileSize, char *carpet, char *wall,
@@ -39,5 +38,7 @@ void printRobot(int direction, Position pos, Position tileSize, Graph graph);
 
 // Nettoyage de l'ancienne position du robot
 void clearPosition(Position pos, Graph graph, Position tileSize);
+
+void wait(int time);
 
 #endif

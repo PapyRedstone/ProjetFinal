@@ -5,7 +5,14 @@ Created on Tue Mar 22 14:30:43 2016
 @author: alexandre.febvre
 """
 
-def pathfinding(Map, posOrigin, posTarget):
+def pathfinding(filename,xs,ys, xt,yt):
+    
+    file = open(filename, "r");
+    file.readline()
+    Map = [x[:] for x in file.readlines()]
+    file.close()
+    posOrigin = {"x":xs, "y": ys}
+    posTarget = {"x":xt, "y": yt}
     """
     Fonction retournant les mouvement necessaire pour atteindre l'objectif en
     utilisant l'algorithme de recherche de chemin A*
@@ -148,7 +155,15 @@ def pathfinding(Map, posOrigin, posTarget):
         
     #si on est arrive on retourne le chemin, sinon on renvoie None
     if tmp == Node(posTarget):
-        return retracePath(tmp)
+        if retracePath(tmp)[0] == "UP":
+            return 0
+        if retracePath(tmp)[0] == "RIGHT":
+            return 1
+        if retracePath(tmp)[0] == "DOWN":
+            return 2
+        if retracePath(tmp)[0] == "LEFT":
+            return 3
+
     else:
         print("Pas de solutions")
         return None

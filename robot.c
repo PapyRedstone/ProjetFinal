@@ -5,7 +5,6 @@ Robot initRobot(Position pos, Position size) {
   rob.position = pos;
   rob.direction = UP;
   rob.step = 0;
-  rob.path = NULL;
   rob.memory = malloc(size.y * sizeof(char *));
   rob.mapSize = size;
   rob.block = 0;
@@ -16,6 +15,7 @@ Robot initRobot(Position pos, Position size) {
       rob.memory[i][j] = ' ';
     }
   }
+  rob.path = addFront(rob.position, rob.path);
   return rob;
 }
 

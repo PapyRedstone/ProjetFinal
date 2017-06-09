@@ -1,13 +1,14 @@
 SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 
-CFLAGS = -g -Wall -pedantic 
-LDFLAGS = -lSDL -lSDL_image -lSDL_gfx -lpython3.5m -lpthread -ldl -lutil -lm -I/usr/include/python3.5m
+CFLAGS = -g -Wall -pedantic  
+LDFLAGS = -lSDL -lSDL_image -lSDL_gfx -I/usr/include/python2.7 -I/usr/include/python2.7 -lpthread -ldl -lutil -lm -lpython2.7 -Xlinker -export-dynamic
+
 
 all: a.out
 
 a.out : $(OBJ)
-	gcc -o $@ $^ $(LDFLAGS)
+	gcc -o $@ $^ $(LDFLAGS) 
 
 %.o: %.c
 	gcc -o $@ -c $< $(CFLAGS)

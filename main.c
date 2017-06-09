@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  aStar();
+  aStar(&marvin, argv[1]);
 
   printf("Step : %d \n", marvin.step);
 

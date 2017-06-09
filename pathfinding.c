@@ -22,10 +22,11 @@ int robotBlock(Robot *rob) {
   for (i = 0; i < 4; i++) {
     if (!(checkChar(rob, rob->memory, rob->mapSize, '.') ||
           checkWall(rob, rob->memory, rob->mapSize))) {
-      return 0;
+      rob->block = 0; return 0;
     }
     turnLeft(rob);
   }
+  rob->block = 1;
   return 1;
 }
 
@@ -55,9 +56,9 @@ void searchNextPos(Robot *rob, char **map, Position size) {
   rob->path = addFront(rob->position, rob->path);
   int result;
 
+  robotBlock(rob);
   // Si le robot est bloque on revient sur ses pas
-  if (robotBlock(rob)) {
-    rob->block = 1;
+  if (rob->block) {
     while (positionBlock(rob->path->position, rob->memory, rob->mapSize)) {
       rob->path = popFront(rob->path);
     }

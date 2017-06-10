@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     }
 
     printRobot(marvin.direction, marvin.position, tileSize, graph);
-    //wait(20);
+    wait(20);
 
     printf("\n\n\n");
     for (y = 0; y < mapSize.y; y++) {

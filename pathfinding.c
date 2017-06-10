@@ -53,9 +53,10 @@ int positionBlock(Position pos, char **map, Position size) {
   return 1;
 }
 
-void searchNextPos(Robot *rob, char **map, Position size, PythonObj *python,
-                   char *filename) {
-  rob->path = addFront(rob->position, rob->path);
+void searchNextPos(Robot *rob, char **map, Position size) {
+  rob->path =
+      addFront(rob->position, directionTo(rob->position, rob->path->position),
+               rob->path);
   int result;
 
   checkRobotBlock(rob);
@@ -66,8 +67,7 @@ void searchNextPos(Robot *rob, char **map, Position size, PythonObj *python,
     }
     printf("rob : %d,%d\n", rob->position.x, rob->position.y);
     printf("target : %d,%d\n", rob->path->position.x, rob->path->position.y);
-    printf("dir : %d\n", astar(rob, filename, python));
-    while (rob->direction != astar(rob, filename, python)) {
+    while (rob->direction != rob->path->directionToPrev) {
       turnLeft(rob);
     }
   } else {

@@ -83,9 +83,10 @@ int posInScreen(Position pos, Position size) {
   return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;
 }
 
-Data *addFront(Position pos, Data *data) {
+Data *addFront(Position pos, int dir,Data *data) {
   Data *d = malloc(sizeof(Data));
   d->position = pos;
+  d->directionToPrev = dir;
   d->prev = data;
   return d;
 }
@@ -101,28 +102,4 @@ void freeData(Data *data) {
   while (cur) {
     popFront(cur);
   }
-}
-
-PythonObj *initCython(){
-  Py_Initialize();
-
-  PythonObj *python = malloc(sizeof(PythonObj));
-
-  // Build the name object
-  python->pName = PyString_FromString("aStar");
-
-  // Load the module object
-  python->pModule = PyImport_Import(python->pName);
-
-  // pDict is a borrowed reference
-  python->pDict = PyModule_GetDict(python->pModule);
-
-  return python;
-}
-
-void freeCython(PythonObj *python){
-  Py_DECREF(python->pName);
-  Py_DECREF(python->pModule);
-  Py_DECREF(python->pDict);
-  Py_Finalize();
 }

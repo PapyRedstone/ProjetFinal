@@ -15,7 +15,7 @@ Robot initRobot(Position pos, Position size) {
       rob.memory[i][j] = ' ';
     }
   }
-  rob.path = addFront(rob.position, rob.path);
+  rob.path = addFront(rob.position, 0, rob.path);
   return rob;
 }
 

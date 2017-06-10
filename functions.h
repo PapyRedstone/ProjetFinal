@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <python2.7/Python.h>
 
 #define BUFFLEN 1000
 #define UP 0
@@ -22,12 +21,9 @@ typedef struct { int x, y; } Position;
 
 typedef struct Data {
   Position position;
+  int directionToPrev;
   struct Data *prev;
 } Data;
-
-typedef struct {
-  PyObject *pName, *pModule, *pDict;
-}PythonObj;
 
 // Fonction retournant une ligne d'un fichier
 char *getFromFile(char *str, int maxLen, FILE *file);
@@ -42,11 +38,8 @@ int posEgal(Position pos1, Position pos2);
 int directionTo(Position pos1, Position pos2);
 int posInScreen(Position pos, Position size);
 
-Data *addFront(Position pos, Data *data);
+Data *addFront(Position pos, int dir, Data *data);
 Data *popFront(Data *data);
 void freeData(Data *data);
-
-PythonObj *initCython();
-void freeCython(PythonObj *python);
 
 #endif

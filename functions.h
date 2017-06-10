@@ -17,8 +17,11 @@
 #define DOWN 2
 #define LEFT 3
 
+// Definition d'une structure definissant une position
 typedef struct { int x, y; } Position;
 
+// Definition d'une liste chainee contenant une position et une direction pers
+// la position precedente
 typedef struct Data {
   Position position;
   int directionToPrev;
@@ -38,6 +41,7 @@ int posEgal(Position pos1, Position pos2);
 int directionTo(Position pos1, Position pos2);
 int posInScreen(Position pos, Position size);
 
+// Gestion de la liste chaine
 Data *addFront(Position pos, int dir, Data *data);
 Data *popFront(Data *data);
 void freeData(Data *data);

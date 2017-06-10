@@ -39,6 +39,7 @@ void printRobot(int direction, Position pos, Position tileSize, Graph graph);
 // Nettoyage de l'ancienne position du robot
 void clearPosition(Position pos, Graph graph, Position tileSize);
 
+// Attente utilisant la SDL
 void wait(int time);
 
 #endif

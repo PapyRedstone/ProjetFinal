@@ -28,6 +28,8 @@ void turnRight(Robot *rob);
 // Capteurs du robot
 int checkWall(Robot *rob, char **map, Position size);
 int checkExit(Robot *rob, char **map, Position size);
+
+//Memoire du robot
 int checkChar(Robot *rob, char **map, Position size, char c);
 
 

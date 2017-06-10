@@ -30,22 +30,32 @@ int main(int argc, char *argv[]) {
           wallFind = 1;
         }
       } else {
-        searchNextPos(&marvin, map, mapSize);
+        if (!searchNextPos(&marvin, map, mapSize)) {
+          printf("No Exit Found\n");
+          windowIsOpen = 0;
+        }
       }
       clearPosition(marvin.position, graph, tileSize);
       goForward(&marvin, map, mapSize);
+      if (!marvin.block) {
+        marvin.path =
+            addFront(marvin.position, (marvin.direction + 2) % 4, marvin.path);
+      }
+    } else {
+      printf("Exit Found !\n");
+      windowIsOpen = 0;
     }
 
     printRobot(marvin.direction, marvin.position, tileSize, graph);
-    if(marvin.block){
-      wait(80);
-    }
-    wait(20);
+    //wait(20);
 
     printf("\n\n\n");
     for (y = 0; y < mapSize.y; y++) {
       for (x = 0; x < mapSize.x; x++) {
         printf("%c", marvin.memory[y][x]);
+        if (x == marvin.position.x && y == marvin.position.y) {
+          printf("\bR");
+        }
       }
       printf("\n");
     }
@@ -54,6 +64,8 @@ int main(int argc, char *argv[]) {
   printf("Step : %d \n", marvin.step);
 
   freeGraph(graph);
+
+  deleteRobot(&marvin);
 
   freeTab2D((void **)map, mapSize);
 

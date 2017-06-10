@@ -3,7 +3,8 @@
 int isLeftAWall(Robot *rob, char **map, Position size) {
   int result;
   turnLeft(rob);
-  result = checkWall(rob, map, size);
+  result = checkWall(rob, map, size) ||
+           checkChar(rob, rob->memory, rob->mapSize, '.');
   turnRight(rob);
   return result;
 }
@@ -12,7 +13,8 @@ void followWall(Robot *rob, char **map, Position size) {
   if (!isLeftAWall(rob, map, size)) {
     turnLeft(rob);
   }
-  if (checkWall(rob, map, size)) {
+  if (checkWall(rob, map, size) ||
+      checkChar(rob, rob->memory, rob->mapSize, '.')) {
     turnRight(rob);
   }
 }
@@ -53,44 +55,20 @@ int positionBlock(Position pos, char **map, Position size) {
   return 1;
 }
 
-void searchNextPos(Robot *rob, char **map, Position size) {
-  rob->path =
-      addFront(rob->position, directionTo(rob->position, rob->path->position),
-               rob->path);
-  int result;
-
-  checkRobotBlock(rob);
-  // Si le robot est bloque on revient sur ses pas
-  if (rob->block) {
-    while (positionBlock(rob->path->position, rob->memory, rob->mapSize)) {
-      rob->path = popFront(rob->path);
-    }
-    printf("rob : %d,%d\n", rob->position.x, rob->position.y);
-    printf("target : %d,%d\n", rob->path->position.x, rob->path->position.y);
-    while (rob->direction != rob->path->directionToPrev) {
-      turnLeft(rob);
-    }
-  } else {
-    // verifie si on a fait 1 tour
-    if (checkChar(rob, rob->memory, size, '.') && rob->firstTour) {
-      rob->firstTour = 0;
-    }
-
-    // si on a pas fait 1 tour on suit le mur
-    if (rob->firstTour) {
-      followWall(rob, map, size);
-    } else {  // si on a fait plus de 1 tour on evite de repasser par les points
-              // deja visite
-      turnLeft(rob);
-      result =
-          checkChar(rob, rob->memory, size, '.') || checkWall(rob, map, size);
-      turnRight(rob);
-      if (!result) {
-        turnLeft(rob);
-      }
-      if (checkChar(rob, rob->memory, size, '.') || checkWall(rob, map, size)) {
-        turnRight(rob);
-      }
-    }
+int searchNextPos(Robot *rob, char **map, Position size) {
+  if (!rob->path) {
+    return 0;
   }
+  if (checkRobotBlock(rob)) {
+    while (rob->direction != rob->path->directionToPrev) {
+      turnRight(rob);
+    }
+    rob->path = rob->path->prev;
+  } else {
+    followWall(rob, map, size);
+    // while(checkChar(rob, rob->memory, rob->mapSize, '.')){
+    //   turnLeft(rob);
+    // }
+  }
+  return 1;
 }

@@ -8,7 +8,7 @@
 #include "functions.h"
 
 typedef struct {
-  int direction, firstTour, block;
+  int direction, block;
   Position position, mapSize;
   unsigned step;
   char **memory;
@@ -17,6 +17,7 @@ typedef struct {
 
 // Gestion du robot
 Robot initRobot(Position pos, Position size);
+void deleteRobot(Robot *rob);
 Position getStartPoint(char **map, Position size);
 
 // Mouvement du robot

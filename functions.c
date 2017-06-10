@@ -92,6 +92,9 @@ Data *addFront(Position pos, int dir,Data *data) {
 }
 
 Data *popFront(Data *data) {
+  if(!data){
+    return NULL;
+  }
   Data *tmp = data->prev;
   free(data);
   return tmp;
@@ -100,6 +103,6 @@ Data *popFront(Data *data) {
 void freeData(Data *data) {
   Data *cur = data;
   while (cur) {
-    popFront(cur);
+    cur = popFront(cur);
   }
 }

@@ -8,15 +8,23 @@ Robot initRobot(Position pos, Position size) {
   rob.memory = malloc(size.y * sizeof(char *));
   rob.mapSize = size;
   rob.block = 0;
-  rob.firstTour = 1;
   for (int i = 0; i < size.y; i++) {
     rob.memory[i] = malloc(size.x * sizeof(char));
     for (int j = 0; j < size.x; j++) {
       rob.memory[i][j] = ' ';
     }
   }
-  rob.path = addFront(rob.position, 0, rob.path);
+  rob.path = addFront(rob.position, 0, NULL);
   return rob;
+}
+
+void deleteRobot(Robot *rob){
+  int i;
+  freeData(rob->path);
+  for(i=0; i<rob->mapSize.y; i++){
+    free(rob->memory[i]);
+  }
+  free(rob->memory);
 }
 
 Position getStartPoint(char **map, Position size) {

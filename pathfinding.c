@@ -66,9 +66,6 @@ int searchNextPos(Robot *rob, char **map, Position size) {
     rob->path = rob->path->prev;
   } else {
     followWall(rob, map, size);
-    // while(checkChar(rob, rob->memory, rob->mapSize, '.')){
-    //   turnLeft(rob);
-    // }
   }
   return 1;
 }

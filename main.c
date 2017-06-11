@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   srand(time(NULL));
   Position mapSize, tileSize;
   char **map = initArray(argv[1], &mapSize);
-  int x, y, wallFind = 0;
+  int wallFind = 0;
   Robot marvin = initRobot(getStartPoint(map, mapSize), mapSize);  // H2G2
 
   Graph graph = initGraph(mapSize, &tileSize, "carpet.jpg", "wall.jpg",
@@ -22,6 +22,8 @@ int main(int argc, char *argv[]) {
   printRobot(marvin.direction, marvin.position, tileSize, graph);
 
   while (windowIsOpen) {
+    printf("\n\n\n");
+    printMap(marvin.position, marvin.memory, marvin.mapSize);
     windowIsOpen = handleEvent();
     if (!checkExit(&marvin, map, mapSize)) {
       if (!wallFind) {
@@ -48,17 +50,6 @@ int main(int argc, char *argv[]) {
 
     printRobot(marvin.direction, marvin.position, tileSize, graph);
     wait(20);
-
-    printf("\n\n\n");
-    for (y = 0; y < mapSize.y; y++) {
-      for (x = 0; x < mapSize.x; x++) {
-        printf("%c", marvin.memory[y][x]);
-        if (x == marvin.position.x && y == marvin.position.y) {
-          printf("\bR");
-        }
-      }
-      printf("\n");
-    }
   }
 
   printf("Step : %d \n", marvin.step);

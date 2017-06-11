@@ -41,7 +41,7 @@ int searchNextPos(Robot *rob, char **map, Position size) {
     while (rob->direction != rob->path->directionToPrev) {
       turnRight(rob);
     }
-    rob->path = rob->path->prev;
+    rob->path = popFront(rob->path);
   } else {
     followWall(rob, map, size);
   }

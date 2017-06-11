@@ -18,28 +18,28 @@ Robot initRobot(Position pos, Position size) {
   return rob;
 }
 
-void deleteRobot(Robot *rob){
+void deleteRobot(Robot *rob) {
   int i;
   freeData(rob->path);
-  for(i=0; i<rob->mapSize.y; i++){
+  for (i = 0; i < rob->mapSize.y; i++) {
     free(rob->memory[i]);
   }
   free(rob->memory);
 }
 
+// Recupere le point de depart du robot
 Position getStartPoint(char **map, Position size) {
   int x, y;
+  Position tmp;
   for (y = 0; y < size.y; y++) {
     for (x = 0; x < size.x; x++) {
       if (map[y][x] == 'D') {
-        Position tmp;
         tmp.x = x;
         tmp.y = y;
         return tmp;
       }
     }
   }
-  Position tmp;
   tmp.x = -1;
   tmp.y = -1;
   return tmp;

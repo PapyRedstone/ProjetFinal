@@ -83,7 +83,7 @@ int posInScreen(Position pos, Position size) {
   return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;
 }
 
-Data *addFront(Position pos, int dir,Data *data) {
+Data *addFront(Position pos, int dir, Data *data) {
   Data *d = malloc(sizeof(Data));
   d->position = pos;
   d->directionToPrev = dir;
@@ -92,7 +92,7 @@ Data *addFront(Position pos, int dir,Data *data) {
 }
 
 Data *popFront(Data *data) {
-  if(!data){
+  if (!data) {
     return NULL;
   }
   Data *tmp = data->prev;
@@ -104,5 +104,18 @@ void freeData(Data *data) {
   Data *cur = data;
   while (cur) {
     cur = popFront(cur);
+  }
+}
+
+void printMap(Position robPos, char **map, Position size) {
+  int x, y;
+  for (y = 0; y < size.y; y++) {
+    for (x = 0; x < size.x; x++) {
+      printf("%c", map[y][x]);
+      if (x == robPos.x && y == robPos.y) {
+        printf("\bR");
+      }
+    }
+    printf("\n");
   }
 }

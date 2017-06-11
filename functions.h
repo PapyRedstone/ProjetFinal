@@ -33,6 +33,7 @@ char *getFromFile(char *str, int maxLen, FILE *file);
 
 // Gestion du tableau
 char **initArray(char *filename, Position *maxPos);
+void printMap(Position robPos, char **map, Position size);
 void freeTab2D(void **tab, Position size);
 
 // Utilitaire

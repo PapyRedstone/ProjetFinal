@@ -7,7 +7,6 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  srand(time(NULL));
   Position mapSize, tileSize;
   char **map = initArray(argv[1], &mapSize);
   int wallFind = 0;
@@ -22,28 +21,28 @@ int main(int argc, char *argv[]) {
   printRobot(marvin.direction, marvin.position, tileSize, graph);
 
   while (windowIsOpen) {
+    // Affichage de la memoire du robot
     printf("\n\n\n");
     printMap(marvin.position, marvin.memory, marvin.mapSize);
     windowIsOpen = handleEvent();
+
+    clearPosition(marvin.position, graph, tileSize);
+
+    // Recerche de la prochaine position
     if (!checkExit(&marvin, map, mapSize)) {
-      if (!wallFind) {
-        if (checkWall(&marvin, map, mapSize)) {
-          turnRight(&marvin);
-          wallFind = 1;
-        }
-      } else {
-        if (!searchNextPos(&marvin, map, mapSize)) {
-          printf("No Exit Found\n");
-          windowIsOpen = 0;
-        }
+      // cas ou in a plus de pas possible
+      if (!searchNextPos(&marvin, map, mapSize)) {
+        printf("No Exit Found\n");
+        windowIsOpen = 0;
       }
-      clearPosition(marvin.position, graph, tileSize);
+
+      // on avanche et on sauvegarde ce mouvement
       goForward(&marvin, map, mapSize);
       if (!marvin.block) {
         marvin.path =
             addFront(marvin.position, (marvin.direction + 2) % 4, marvin.path);
       }
-    } else {
+    } else {  // cas ou on a trouve la sortie
       printf("Exit Found !\n");
       windowIsOpen = 0;
     }

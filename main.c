@@ -2,11 +2,13 @@
 #include "sdl.h"
 
 int main(int argc, char *argv[]) {
+  // verification du nombre de parametre
   if (argc != 2) {
     fprintf(stderr, "Usage : %s filename\n", argv[0]);
     return -1;
   }
 
+  // declaration et initialisation des variables
   Position mapSize;
   char **map = initArray(argv[1], &mapSize);
   Robot marvin = initRobot(getStartPoint(map, mapSize), mapSize);  // H2G2
@@ -16,6 +18,7 @@ int main(int argc, char *argv[]) {
 
   int windowIsOpen = 1;
 
+  // premier affichage
   printBack(map, mapSize, graph);
   printRobot(marvin.direction, marvin.position, graph);
 
@@ -52,6 +55,7 @@ int main(int argc, char *argv[]) {
 
   printf("Step : %d \n", marvin.step);
 
+  // Liberation de la memoire
   freeGraph(graph);
 
   deleteRobot(&marvin);

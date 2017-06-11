@@ -68,7 +68,7 @@ void freeGraph(Graph g) {
   Fonction: Gestion des evenement SDL
   Entrée: NEANT
   Sortie: NEANT
-  Retour: la fenetre a ete ferme
+  Retour: boolean (la fenetre est ferme)
 =============================================================================*/
 int handleEvent() {
   SDL_Event event;
@@ -166,15 +166,13 @@ void printRobot(int direction, Position pos, Graph graph) {
   Sortie: NEANT
   Retour: NEANT
 =============================================================================*/
-void clearPosition(Position pos, Graph graph) {
+void clearPosition(Position pos, char c, Graph graph) {
   SDL_Surface *img = NULL;
   SDL_Rect src, dest;
 
   float zoom;
 
   zoom = (float)graph.tileSize.x / IMAGESIZE;
-
-  img = rotozoomSurface(graph.carpet, 0.f, zoom, 1);
 
   dest.x = pos.x * graph.tileSize.x;
   dest.y = pos.y * graph.tileSize.y;
@@ -183,6 +181,22 @@ void clearPosition(Position pos, Graph graph) {
   src.h = graph.tileSize.y;
   src.x = 0;
   src.y = 0;
+
+  switch (c) {
+    case 'x':
+      img = rotozoomSurface(graph.wall, 0.f, zoom, 1);
+      break;
+
+    case 'S':
+      img = rotozoomSurface(graph.door, 0.f, zoom, 1);
+      break;
+
+    case ' ':
+    case 'D':
+    default:
+      img = rotozoomSurface(graph.carpet, 0.f, zoom, 1);
+      break;
+  }
 
   SDL_BlitSurface(img, &src, graph.screen, &dest);
   SDL_FreeSurface(img);

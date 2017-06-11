@@ -7,6 +7,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include <SDL/SDL_rotozoom.h>
 #include "functions.h"
 
@@ -38,7 +39,7 @@ void printBack(char **map, Position size, Graph graph);
 void printRobot(int direction, Position pos, Graph graph);
 
 // Nettoyage de l'ancienne position du robot
-void clearPosition(Position pos, Graph graph);
+void clearPosition(Position pos, char c, Graph graph);
 
 // Attente utilisant la SDL
 void wait(int time);

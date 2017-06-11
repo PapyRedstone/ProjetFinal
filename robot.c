@@ -1,5 +1,12 @@
 #include "robot.h"
 
+
+/*=============================================================================
+  Fonction : Initialise le robot
+  Entrée: La position de depart et la position de la carte
+  Sortie: NEANT
+  Retour: Le robot
+=============================================================================*/
 Robot initRobot(Position pos, Position size) {
   Robot rob;
   rob.position = pos;
@@ -18,6 +25,12 @@ Robot initRobot(Position pos, Position size) {
   return rob;
 }
 
+/*=============================================================================
+  Fonction : Supprime le robot
+  Entrée: le robot
+  Sortie: NEANT
+  Retour: NEATN
+=============================================================================*/
 void deleteRobot(Robot *rob) {
   int i;
   freeData(rob->path);
@@ -27,7 +40,13 @@ void deleteRobot(Robot *rob) {
   free(rob->memory);
 }
 
-// Recupere le point de depart du robot
+
+/*=============================================================================
+  Fonction : Recupere le point de depart du robot
+  Entrée: la carte, la taille de sa carte
+  Sortie: NEANT
+  Retour: la position de depart du robot 
+=============================================================================*/
 Position getStartPoint(char **map, Position size) {
   int x, y;
   Position tmp;
@@ -45,6 +64,13 @@ Position getStartPoint(char **map, Position size) {
   return tmp;
 }
 
+
+/*=============================================================================
+  Fonction : Fait avancer le robot
+  Entrée: le robot, la carte, la taille de la carte
+  Sortie: le Robot
+  Retour: NEANT
+=============================================================================*/
 void goForward(Robot *rob, char **map, Position size) {
   if (checkWall(rob, map, size)) {
     return;
@@ -67,12 +93,27 @@ void goForward(Robot *rob, char **map, Position size) {
   rob->memory[rob->position.y][rob->position.x] = '.';
 }
 
+
+/*=============================================================================
+  Fonction : Tourne a gauche
+  Entrée: le robot
+  Sortie: le robot
+  Retour: NEANT
+=============================================================================*/
 void turnLeft(Robot *rob) {
   rob->direction--;
   if (rob->direction < UP) {
     rob->direction = LEFT;
   }
 }
+
+
+/*=============================================================================
+  Fonction : Tourne a droite
+  Entrée: le robot
+  Sortie: le robot
+  Retour: NEANT
+=============================================================================*/
 void turnRight(Robot *rob) {
   rob->direction++;
   if (rob->direction > LEFT) {
@@ -80,6 +121,13 @@ void turnRight(Robot *rob) {
   }
 }
 
+
+/*=============================================================================
+  Fonction : Verifie si la case en face du robot est un mur
+  Entrée: le robot, la carte, la taille de la carte
+  Sortie: NEANT
+  Retour: boolean (vraie si c'est un mur, faux sinon)
+=============================================================================*/
 int checkWall(Robot *rob, char **map, Position size) {
   Position pos;
   pos.x = rob->position.x;
@@ -109,6 +157,12 @@ int checkWall(Robot *rob, char **map, Position size) {
   return map[pos.y][pos.x] == 'x';
 }
 
+/*=============================================================================
+  Fonction : Verifie si la case en face du robot est un certain caratere
+  Entrée: le robot, la carte, la taille de la carte
+  Sortie: NEANT
+  Retour: boolean (vraie si c'est un caractere, faux sinon)
+=============================================================================*/
 int checkChar(Robot *rob, char **map, Position size, char c) {
   Position pos;
   pos.x = rob->position.x;
@@ -135,6 +189,12 @@ int checkChar(Robot *rob, char **map, Position size, char c) {
   return map[pos.y][pos.x] == c;
 }
 
+/*=============================================================================
+  Fonction : Verifie si la sortie est a cote du robot
+  Entrée: le robot
+  Sortie: NEANT
+  Retour: boolean (vraie si c'est un pur, faux sinon)
+=============================================================================*/
 int checkExit(Robot *rob, char **map, Position size) {
   int x = rob->position.x;
   int y = rob->position.y;

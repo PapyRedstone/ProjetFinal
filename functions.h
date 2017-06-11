@@ -15,6 +15,7 @@
 #define RIGHT 1
 #define DOWN 2
 #define LEFT 3
+#define DELAY 20
 
 // Definition d'une structure definissant une position
 typedef struct { int x, y; } Position;

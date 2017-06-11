@@ -83,7 +83,7 @@ void freeTab2D(void **tab, Position size) {
   Fonction : Verifie si deux position sont egales
   Entrée: les deux positions
   Sortie: NEANT
-  Retour: un boolen (vrai si les position sont egales, faux sinon)
+  Retour: un boolean (vrai si les position sont egales, faux sinon)
 =============================================================================*/
 int posEgal(Position pos1, Position pos2) {
   return pos1.x == pos2.x && pos1.y == pos2.y;
@@ -114,7 +114,7 @@ int directionTo(Position pos1, Position pos2) {
   Fonction : Verifie si la position est dans un rectangle
   Entrée: la position a verifier, la taille du rectangle
   Sortie: NEANT
-  Retour: boolen (vrai si la position est dedans, faux sinon)
+  Retour: boolean (vrai si la position est dedans, faux sinon)
 =============================================================================*/
 int posInScreen(Position pos, Position size) {
   return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;

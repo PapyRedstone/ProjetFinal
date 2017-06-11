@@ -2,7 +2,7 @@ SRC= $(wildcard *.c)
 OBJ= $(SRC:.c=.o)
 
 CFLAGS = -g -Wall -pedantic  
-LDFLAGS = -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf
+LDFLAGS = -lSDL -lSDL_image -lSDL_gfx 
 PATH:=$(shell pwd)
 AS:=$(shell which as)
 GCC:=$(shell which gcc)

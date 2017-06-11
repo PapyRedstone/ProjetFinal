@@ -42,7 +42,7 @@ int directionTo(Position pos1, Position pos2);
 int posInScreen(Position pos, Position size);
 
 // Gestion de la liste chaine
-Data *addFront(Position pos, int dir, Data *data);
+Data *addFront(Position pos, Data *data);
 Data *popFront(Data *data);
 void freeData(Data *data);
 

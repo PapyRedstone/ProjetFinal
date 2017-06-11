@@ -1,5 +1,12 @@
 #include "functions.h"
 
+/*=============================================================================
+  Fonction : Recupere une ligne d'une fichier avec verification de retour
+correcte et mise de la derniere valeur a '\0'
+  Entrée: La ligne a recupere , la taille du buffer, le fichier
+  Sortie: NEANT
+  Retour: La ligne recupere
+=============================================================================*/
 char *getFromFile(char *str, int maxLen, FILE *file) {
   char *result = fgets(str, maxLen, file);
   if (!result) {
@@ -10,6 +17,12 @@ char *getFromFile(char *str, int maxLen, FILE *file) {
   return result;
 }
 
+/*=============================================================================
+  Fonction : Initialisation d'e la carte
+  Entrée: le fichier ou recuperer la carte
+  Sortie: la taille de la carte
+  Retour: la carte
+=============================================================================*/
 char **initArray(char *filename, Position *size) {
   FILE *file = fopen(filename, "r");
   int x, y;
@@ -52,6 +65,12 @@ char **initArray(char *filename, Position *size) {
   return array;
 }
 
+/*=============================================================================
+  Fonction : Libere un tableau de deux dimension
+  Entrée: Le tableau, sa taille
+  Sortie: NEANT
+  Retour: NEANT
+=============================================================================*/
 void freeTab2D(void **tab, Position size) {
   int i;
   for (i = 0; i < size.y; i++) {
@@ -60,10 +79,22 @@ void freeTab2D(void **tab, Position size) {
   free(tab);
 }
 
+/*=============================================================================
+  Fonction : Verifie si deux position sont egales
+  Entrée: les deux positions
+  Sortie: NEANT
+  Retour: un boolen (vrai si les position sont egales, faux sinon)
+=============================================================================*/
 int posEgal(Position pos1, Position pos2) {
   return pos1.x == pos2.x && pos1.y == pos2.y;
 }
 
+/*=============================================================================
+  Fonction : Retourne la direction de la position 1 vers la position 2
+  Entrée: deux positions
+  Sortie: NEANT
+  Retour: la direction de 1 vers 2
+=============================================================================*/
 int directionTo(Position pos1, Position pos2) {
   int x = pos2.x - pos1.x;
   int y = pos2.y - pos1.y;
@@ -79,18 +110,40 @@ int directionTo(Position pos1, Position pos2) {
   return 0;
 }
 
+/*=============================================================================
+  Fonction : Verifie si la position est dans un rectangle
+  Entrée: la position a verifier, la taille du rectangle
+  Sortie: NEANT
+  Retour: boolen (vrai si la position est dedans, faux sinon)
+=============================================================================*/
 int posInScreen(Position pos, Position size) {
   return pos.x >= size.x || pos.x < 0 || pos.y >= size.y || pos.y < 0;
 }
 
-Data *addFront(Position pos, int dir, Data *data) {
+/*=============================================================================
+  Fonction : Ajoute une valeur au debut de la liste chainee
+  Entrée: La position a ajouter, la liste chainee a agrandir
+  Sortie: NEANT
+  Retour: la liste agrandie
+=============================================================================*/
+Data *addFront(Position pos, Data *data) {
   Data *d = malloc(sizeof(Data));
   d->position = pos;
-  d->directionToPrev = dir;
+  if (data) {
+    d->directionToPrev = directionTo(pos, data->position);
+  } else {
+    d->directionToPrev = 0;
+  }
   d->prev = data;
   return d;
 }
 
+/*=============================================================================
+  Fonction : Libere la premiere position d'une liste chainee
+  Entrée: La liste a retrecir
+  Sortie: NEANT
+  Retour: La liste racourcie
+=============================================================================*/
 Data *popFront(Data *data) {
   if (!data) {
     return NULL;
@@ -100,6 +153,12 @@ Data *popFront(Data *data) {
   return tmp;
 }
 
+/*=============================================================================
+  Fonction : Libere tourte une liste
+  Entrée: La liste a liberer
+  Sortie: NEANT
+  Retour: NEANT
+=============================================================================*/
 void freeData(Data *data) {
   Data *cur = data;
   while (cur) {
@@ -107,6 +166,12 @@ void freeData(Data *data) {
   }
 }
 
+/*=============================================================================
+  Fonction : Affiche dans la console une carte
+  Entrée: La position du robot, la carte, la taille de la carte
+  Sortie: NEANT
+  Retour: NEANT
+=============================================================================*/
 void printMap(Position robPos, char **map, Position size) {
   int x, y;
   for (y = 0; y < size.y; y++) {

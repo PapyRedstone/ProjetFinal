@@ -1,5 +1,11 @@
 #include "pathfinding.h"
 
+/*=============================================================================
+  Fonction : Verifie si la position a droite est un mur ou une position marque
+  Entrée: le robot, la carte, la taille de la carte
+  Sortie: NEANT
+  Retour: boolen(vrai si c'est un mur ou marque, faux sinon)
+=============================================================================*/
 int isLeftAWall(Robot *rob, char **map, Position size) {
   int result;
   turnLeft(rob);
@@ -9,6 +15,13 @@ int isLeftAWall(Robot *rob, char **map, Position size) {
   return result;
 }
 
+/*=============================================================================
+  Fonction : Algorithme "de la main droite" qui suit les murs ET les positions
+marques
+  Entrée:
+  Sortie:
+  Retour:
+=============================================================================*/
 void followWall(Robot *rob, char **map, Position size) {
   if (!isLeftAWall(rob, map, size)) {
     turnLeft(rob);
@@ -19,6 +32,12 @@ void followWall(Robot *rob, char **map, Position size) {
   }
 }
 
+/*=============================================================================
+  Fonction :
+  Entrée:
+  Sortie:
+  Retour:
+=============================================================================*/
 int checkRobotBlock(Robot *rob) {
   int i;
   rob->block = 1;
@@ -33,6 +52,12 @@ int checkRobotBlock(Robot *rob) {
   return 1;
 }
 
+/*=============================================================================
+  Fonction :
+  Entrée:
+  Sortie:
+  Retour:
+=============================================================================*/
 int searchNextPos(Robot *rob, char **map, Position size) {
   if (!rob->path) {
     return 0;

@@ -17,13 +17,14 @@
 typedef struct {
   SDL_Surface *screen;
   SDL_Surface *carpet, *wall, *door, *robot;
+  Position tileSize;
 } Graph;
 
 // Initialisaton de la SDL et de la fenetre
 SDL_Surface *initSDL(Position size, Position *tileSize);
 
 // Gestion des donnes de la SDL
-Graph initGraph(Position size, Position *tileSize, char *carpet, char *wall,
+Graph initGraph(Position size, char *carpet, char *wall,
                 char *door, char *robot);
 void freeGraph(Graph g);
 
@@ -31,13 +32,13 @@ void freeGraph(Graph g);
 int handleEvent();
 
 // Affichage de l'appartement
-void printBack(char **map, Position size, Position tileSize, Graph graph);
+void printBack(char **map, Position size, Graph graph);
 
 // Affichahge du robot
-void printRobot(int direction, Position pos, Position tileSize, Graph graph);
+void printRobot(int direction, Position pos, Graph graph);
 
 // Nettoyage de l'ancienne position du robot
-void clearPosition(Position pos, Graph graph, Position tileSize);
+void clearPosition(Position pos, Graph graph);
 
 // Attente utilisant la SDL
 void wait(int time);

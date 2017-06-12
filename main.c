@@ -8,6 +8,8 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
+  srand(time(NULL));
+
   // declaration et initialisation des variables
   Position mapSize;
   char **map = initArray(argv[1], &mapSize);
@@ -24,7 +26,7 @@ int main(int argc, char *argv[]) {
 
   while (windowIsOpen) {
     // Affichage de la memoire du robot
-    printf("\n\n\n");
+    printf("\n");
     printMap(marvin.position, marvin.memory, marvin.mapSize);
     windowIsOpen = handleEvent();
 

@@ -10,7 +10,7 @@
 Robot initRobot(Position pos, Position size) {
   Robot rob;
   rob.position = pos;
-  rob.direction = UP;
+  rob.direction = rand() % 4;
   rob.step = 0;
   rob.memory = malloc(size.y * sizeof(char *));
   rob.mapSize = size;
